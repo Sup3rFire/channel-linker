@@ -15,10 +15,14 @@ client.prefixes = new Keyv(`sqlite://db/prefixes.sqlite`);
 client.prefixes.on("error", (err) =>
   console.error("Prefixes Keyv connection error:", err)
 );
+client.clink = new Keyv(`sqlite://db/channels.sqlite`);
+client.clink.on("error", (err) =>
+  console.error("Channel Link Keyv connection error:", err)
+);
 client.commandDir = "./commands/";
 
 client.color = "#FF6464";
-client.prefix = ["."];
+client.prefix = ["c."];
 client.developers = ["337024000330956811"];
 
 fs.readdir("./events/", (err, files) => {

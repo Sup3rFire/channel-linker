@@ -1,12 +1,13 @@
 const fs = require("fs");
 
 module.exports.execute = async (client, message, args, Discord) => {
-  let user = client.users.cache.get(args[0]) || message.mentions.users.first();
-  let reason = args.slice(1).join(" ");
+  const user =
+    client.users.cache.get(args[0]) || message.mentions.users.first();
+  const reason = args.slice(1).join(" ");
 
   if (!user) return message.channel.send("Couldn't find the user");
 
-  let blacklistEmbed = new Discord.MessageEmbed()
+  const blacklistEmbed = new Discord.MessageEmbed()
     .setColor(client.color)
     .addField("Developer", `${message.author.tag} (ID: ${message.author.id})`)
     .addField("Reason", reason);

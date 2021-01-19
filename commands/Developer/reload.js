@@ -9,7 +9,7 @@ module.exports.execute = async (client, message, args, Discord) => {
     );
   if (!command) return message.channel.send("That command doesn't exist!");
 
-  let dir = client.commandDir;
+  const dir = client.commandDir;
   fs.readdirSync(dir).forEach((dirs) => {
     const commands = fs
       .readdirSync(`${dir}${dirs}/`)

@@ -3,16 +3,16 @@ const { readdirSync } = require("fs");
 module.exports.execute = async (client, message, args, Discord) => {
   const { commands } = client;
 
-  let dir = client.commandDir;
+  const dir = client.commandDir;
 
   if (!args.length) {
-    let categories = [];
+    const categories = [];
 
     readdirSync(dir).forEach((dirs, index) => {
       categories[index] = `**[${index}]** ${dirs}`;
     });
 
-    var helpEmbed = new Discord.MessageEmbed()
+    const helpEmbed = new Discord.MessageEmbed()
       .setColor(client.color)
       .setTitle("Help Menu")
       .setDescription([
@@ -29,9 +29,9 @@ module.exports.execute = async (client, message, args, Discord) => {
       commands.find((c) => c.info.aliases && c.info.aliases.includes(name));
     let category;
     if (!command) {
-      let categories = readdirSync(dir);
+      const categories = readdirSync(dir);
       if (!isNaN(name)) {
-        let intParsed = parseInt(name);
+        const intParsed = parseInt(name);
         if (categories.length > intParsed) {
           category = categories[intParsed];
         }
@@ -67,13 +67,13 @@ module.exports.execute = async (client, message, args, Discord) => {
 
       return message.channel.send(commandEmbed);
     } else if (category) {
-      let commandsCategory = [];
+      const commandsCategory = [];
 
       readdirSync(`${dir}${category}/`)
         .filter((files) => files.endsWith(".js"))
         .forEach((dirs, index) => {
-          let commandName = dirs.substring(0, dirs.length - 3);
-          let commandDescription = commands.get(commandName).info.description;
+          const commandName = dirs.substring(0, dirs.length - 3);
+          const commandDescription = commands.get(commandName).info.description;
           commandsCategory[index] = `**${commandName}**`;
           if (commandDescription)
             commandsCategory[index] += `\n${commandDescription}`;
@@ -82,7 +82,7 @@ module.exports.execute = async (client, message, args, Discord) => {
       const categoryEmbed = new Discord.MessageEmbed()
         .setTitle(category + " Commands")
         .setColor(client.color)
-        .setDescription(commandsCategory.join(", "));
+        .setDescription(commandsCategory.join("\n"));
 
       return message.channel.send(categoryEmbed);
     }

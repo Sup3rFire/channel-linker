@@ -6,12 +6,27 @@ function checkPrefix(message, item) {
 }
 
 module.exports = async (client, Discord, message) => {
-  let blacklist = await client.blacklist.get(message.author.id);
+  const blacklist = await client.blacklist.get(message.author.id);
   if (blacklist) return;
 
   const cooldowns = client.cooldowns;
 
   if (message.author.bot) return;
+
+  if (message.guild) {
+    const linked = await client.clink.get(message.channel.id);
+    if (linked) {
+      console.log(linked);
+      for (const channelId of linked) {
+        const channel = client.channels.cache.get(channelId);
+        if (channel) {
+          channel.send(message.content || "", {
+            files: message.attachments.array(),
+          });
+        }
+      }
+    }
+  }
 
   let useMPrefix = false;
   let prefix;
@@ -26,7 +41,7 @@ module.exports = async (client, Discord, message) => {
     args = message.content.split(">").slice(1).join(">").trim().split(/\s+/);
   } else {
     if (message.guild && (await client.prefixes.get(message.guild.id))) {
-      let gPrefix = await client.prefixes.get(message.guild.id);
+      const gPrefix = await client.prefixes.get(message.guild.id);
       if (gPrefix) {
         if (checkPrefix(message, gPrefix)) {
           prefix = gPrefix;
@@ -60,7 +75,7 @@ module.exports = async (client, Discord, message) => {
 
   if (!command) {
     if (useMPrefix) {
-      var mEmbed = new Discord.MessageEmbed()
+      const mEmbed = new Discord.MessageEmbed()
         .setTitle(`Online`)
         .setColor(client.color)
         .setDescription(`Prefix is: \`${prefix}\``);
