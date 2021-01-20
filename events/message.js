@@ -16,7 +16,6 @@ module.exports = async (client, Discord, message) => {
   if (message.guild) {
     const linked = await client.clink.get(message.channel.id);
     if (linked) {
-      console.log(linked);
       for (const channelId of linked) {
         const channel = client.channels.cache.get(channelId);
         if (channel) {

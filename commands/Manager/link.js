@@ -51,15 +51,25 @@ module.exports.execute = async (client, message, args) => {
             primInfo.includes(secChannel.id) ||
             secInfo.includes(primChannel.id)
           ) {
-            let index = primInfo.indexOf(secInfo);
+            let index = primInfo.indexOf(secChannel.id);
             if (index > -1) {
               primInfo.splice(index, 1);
             }
-            index = secInfo.indexOf(secInfo);
+            index = secInfo.indexOf(primChannel.id);
             if (index > -1) {
               secInfo.splice(index, 1);
             }
-            message.channel.send("De Linked");
+            client.clink.set(primChannel.id, primInfo);
+            client.clink.set(secChannel.id, secInfo);
+            message.channel.send(
+              `Delinked Channels\nChannels now Linked From <#${
+                primChannel.id
+              }>: ${primInfo
+                .map((c) => `<#${c}>`)
+                .join(", ")}\nChannels now Linked From <#${
+                secChannel.id
+              }>: ${secInfo.map((c) => `<#${c}>`).join(", ")}`
+            );
           } else {
             await action.edit("Select The Link Mode (1 Way ➡️ / 2 Way ↔️ )");
             await action.reactions.removeAll();
