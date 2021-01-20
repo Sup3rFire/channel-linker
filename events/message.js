@@ -19,7 +19,7 @@ module.exports = async (client, Discord, message) => {
       for (const channelId of linked) {
         const channel = client.channels.cache.get(channelId);
         if (channel) {
-          channel.send(message.content || "", {
+          channel.send(Discord.Util.removeMentions(message.content) || "", {
             files: message.attachments.array(),
           });
         }
